@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import static java.lang.System.out;
+
 public class SampleTest {
 
     List<Product> products = null;
@@ -49,6 +51,7 @@ public class SampleTest {
                             .filter(Objects::nonNull)
                             .map(female -> female.getSex())
                             .allMatch(Predicate.isEqual("Female")));
+        females.stream().forEach(System.out::println);
     }
 
     @Test
@@ -56,6 +59,6 @@ public class SampleTest {
         Sample sample = new Sample();
         List<Product> emptyProducts = sample.getProducts(products,
                 (product -> Integer.parseInt(product.getProductAmount()) > 1000));
-        Assert.assertTrue(emptyProducts.size() == 1);
+        Assert.assertTrue(emptyProducts.size() == 0);
     }
 }
