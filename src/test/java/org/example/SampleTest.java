@@ -56,6 +56,6 @@ public class SampleTest {
         Sample sample = new Sample();
         List<Product> emptyProducts = sample.getProducts(products,
                 (product -> Integer.parseInt(product.getProductAmount()) > 1000));
-        Assert.assertTrue(emptyProducts.size() == 0);
+        Assert.assertTrue(emptyProducts.size() == 1);
     }
 }
