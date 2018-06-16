@@ -1,0 +1,12 @@
+#Ignore out folder
+out/
+
+#Ignore intellij
+.idea/
+
+#Ignore gradle 
+.gradle/
+
+gradlew.bat
+
+gradlew
