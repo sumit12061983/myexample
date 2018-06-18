@@ -1,11 +1,25 @@
 package org.example;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.ProvidedBy;
+import com.google.inject.Provider;
+import com.google.inject.Stage;
+import org.example.config.PersonModule;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
 
 public class Sample {
+
+    @Inject
+    public IProductManager productManager;
+
+    @Inject
+    IPersonManager personManager;
 
     public static void main(String[] args) {
 
@@ -26,19 +40,19 @@ public class Sample {
         Predicate<Product> productAmountLessThanNinety = (product -> Integer.parseInt(product.getProductAmount()) <
                 90);
 
-        Sample sample = new Sample();
+        Injector injector = Guice.createInjector(new PersonModule());
+        Sample sample = injector.getInstance(Sample.class);
+
         List<Product> cheapProducts = sample.getProducts(products,productAmountLessThanNinety);
         List<Person> females = sample.getFemales(people);
         cheapProducts.forEach(product -> System.out.println(product));
     }
 
-    public List<Person> getFemales(List<Person> people) {
-        return people.stream()
-                     .filter(person -> "Female".equals(person.getSex()))
-                     .collect(Collectors.toList());
+    public List<Product> getProducts(List<Product> products, Predicate<Product> productAmountLessThanNinety) {
+        return productManager.getProducts(products,productAmountLessThanNinety);
     }
 
-    public List<Product> getProducts(List<Product> products, Predicate<Product> filter){
-        return products.stream().filter(filter).collect(Collectors.toList());
+    public List<Person> getFemales(List<Person> people) {
+        return personManager.getFemales(people);
     }
 }

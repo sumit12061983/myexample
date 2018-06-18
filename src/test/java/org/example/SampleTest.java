@@ -1,8 +1,12 @@
 package org.example;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import org.example.config.PersonModule;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -10,13 +14,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import static java.lang.System.out;
-
 public class SampleTest {
 
     List<Product> products = null;
     List<Person> people = null;
-
+    Injector injector = Guice.createInjector(new PersonModule());
+    Sample sample = injector.getInstance(Sample.class);
 
     @Before
     public void prepareForTest() {
@@ -43,7 +46,6 @@ public class SampleTest {
 
     @Test
     public void test_get_females_valid_output_when_valid_data_set_is_provided() {
-        Sample sample = new Sample();
         List<Person> females = sample.getFemales(people);
         Assert.assertTrue(females.size() == 2);
         Assert.assertTrue(females
@@ -56,7 +58,6 @@ public class SampleTest {
 
     @Test
     public void test_get_products_empty_list_when_product_amount_is_less_than_1000_and_filter_greater_than_1000(){
-        Sample sample = new Sample();
         List<Product> emptyProducts = sample.getProducts(products,
                 (product -> Integer.parseInt(product.getProductAmount()) > 1000));
         Assert.assertTrue(emptyProducts.size() == 0);
